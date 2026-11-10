@@ -1,30 +1,39 @@
+import './About.css'
+
 function About() {
   return (
-    <section className="info-section about-section" id="about" aria-labelledby="about-title">
-      <div className="info-section-inner">
-        <p className="section-eyebrow">ABOUT ORANGE APPS</p>
-        <h2 id="about-title">Websites built around your ideas</h2>
-        <p className="section-intro">
-          We help organizations and growing businesses turn their ideas into clear,
-          easy-to-use websites. From the first sketch to launch, our focus is on
-          thoughtful design and solutions that work for your audience.
-        </p>
-        <div className="service-list">
-          <article className="service-card">
-            <span className="service-number">01</span>
-            <h3>Custom websites</h3>
-            <p>Purpose-built websites shaped around your organization and goals.</p>
-          </article>
-          <article className="service-card">
-            <span className="service-number">02</span>
-            <h3>Responsive design</h3>
-            <p>Comfortable, consistent experiences on phones, tablets, and desktops.</p>
-          </article>
-          <article className="service-card">
-            <span className="service-number">03</span>
-            <h3>Friendly support</h3>
-            <p>Helpful guidance to keep your website clear, current, and useful.</p>
-          </article>
+    <section className="page-view about-page">
+      <div className="about-card">
+        <aside className="about-contact">
+          <p className="about-kicker">We’re here to help</p>
+          <h2>Contact Us</h2>
+          <p>Have a question or suggestion? We’d be happy to hear from you.</p>
+          <div className="about-contact-links">
+            <a href="tel:+919030409618">
+              <span aria-hidden="true">☎</span>
+              +91 9030409618
+            </a>
+            <a href="mailto:orangeappsin1@gmail.com">
+              <span aria-hidden="true">✉</span>
+              orangeappsin1@gmail.com
+            </a>
+          </div>
+        </aside>
+        <div className="about-copy">
+          <p className="about-kicker">About Orange Apps</p>
+          <h1>Useful tools, made easy for everyone.</h1>
+          <p className="about-description">
+            We believe everyday digital services should be simple and accessible to everyone.
+            Orange Apps provides free, easy-to-use tools for people who want to get things done
+            without needing technical expertise. We focus on clear experiences, helpful features,
+            and dependable service, so you can spend less time figuring things out and more time
+            on what matters.
+          </p>
+          <div className="about-values">
+            <span>Free to use</span>
+            <span>Easy to access</span>
+            <span>Designed for everyone</span>
+          </div>
         </div>
       </div>
     </section>
