@@ -76,7 +76,7 @@ function App() {
         {page === 'image-to-pdf' && <ImageToPdf />}
       </main>
       <footer className="site-footer">
-        <span className="footer-brand"><img src="/favicon.png" alt="" /> Orange Apps.in</span>
+        <span className="footer-brand"><img src="/favicon.png" alt="" /> orangeapps.in</span>
         <span>Your Ideas. Our Web Solutions.</span>
       </footer>
     </div>

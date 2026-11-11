@@ -2,7 +2,7 @@
   --orange: #ff7900;
   --orange-dark: #e96800;
   --ink: #1d2b42;
-  --muted: #647083;
+  --muted: #010101;
   --line: #e9edf2;
 }
 
@@ -100,7 +100,7 @@
   gap: 16px;
   padding: 8px max(24px, calc((100% - 1120px) / 2));
   border-top: 1px solid var(--line);
-  background: #ffffff;
+  background: #a5a3a3b3;
   color: var(--muted);
   font-size: 13px;
 }
