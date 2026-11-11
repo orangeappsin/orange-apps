@@ -9,9 +9,9 @@ function About() {
           <h2>Contact Us</h2>
           <p>Have a question or suggestion? We’d be happy to hear from you.</p>
           <div className="about-contact-links">
-            <a href="tel:+919030409618">
+            <a href="tel:+918885233325">
               <span aria-hidden="true">☎</span>
-              +91 9030409618
+              +91 8885233325
             </a>
             <a href="mailto:orangeappsin1@gmail.com">
               <span aria-hidden="true">✉</span>

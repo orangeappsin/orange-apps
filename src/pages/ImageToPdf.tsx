@@ -1,64 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { jsPDF } from 'jspdf'
+import { acceptedTypes, createPdf } from '../services/imagetopdf'
 import './ImageToPdf.css'
 
-const acceptedTypes = new Set(['image/jpeg', 'image/png'])
-
-function readImage(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === 'string') resolve(reader.result)
-      else reject(new Error(`Unable to read ${file.name}.`))
-    }
-    reader.onerror = () => reject(new Error(`Unable to read ${file.name}.`))
-    reader.readAsDataURL(file)
-  })
-}
-
-function loadImage(source: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const image = new Image()
-    image.onload = () => resolve(image)
-    image.onerror = () => reject(new Error('One of the selected files is not a valid image.'))
-    image.src = source
-  })
-}
-
-async function createPdf(files: File[]): Promise<Blob> {
-  const firstSource = await readImage(files[0])
-  const firstImage = await loadImage(firstSource)
-  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-  const margin = 10
-
-  for (const [index, file] of files.entries()) {
-    const source = index === 0 ? firstSource : await readImage(file)
-    const image = index === 0 ? firstImage : await loadImage(source)
-
-    if (index > 0) pdf.addPage('a4', 'portrait')
-
-    const pageWidth = pdf.internal.pageSize.getWidth()
-    const pageHeight = pdf.internal.pageSize.getHeight()
-    const scale = Math.min(
-      (pageWidth - margin * 2) / image.width,
-      (pageHeight - margin * 2) / image.height,
-    )
-    const width = image.width * scale
-    const height = image.height * scale
-    const format = file.type === 'image/png' ? 'PNG' : 'JPEG'
-
-    pdf.addImage(
-      source,
-      format,
-      (pageWidth - width) / 2,
-      (pageHeight - height) / 2,
-      width,
-      height,
-    )
-  }
-
-  return pdf.output('blob')
-}
 
 function ImageToPdf() {
   const [files, setFiles] = useState<File[]>([])
@@ -76,21 +19,25 @@ function ImageToPdf() {
       previews.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize))
   }, [previews])
 
+
   useEffect(() => () => previews.forEach(({ url }) => URL.revokeObjectURL(url)), [previews])
 
+
   const addFiles = (selectedFiles: File[]) => {
-    const validFiles = selectedFiles.filter((file) => acceptedTypes.has(file.type))
+    const validFiles = selectedFiles.filter((file) => acceptedTypes.has(file.type.toLowerCase()))
     setFiles((current) => [...current, ...validFiles])
     setError(validFiles.length < selectedFiles.length
-      ? 'Only JPG and PNG images are supported.'
+      ? 'Supported formats: PNG, JPG, JPEG, SVG, WebP, GIF, TIFF.'
       : '')
   }
+
 
   const moveFile = (fromIndex: number, toIndex: number) => {
     setFiles((current) => {
       if (fromIndex < 0 || fromIndex >= current.length || toIndex < 0 || toIndex >= current.length) {
         return current
       }
+
 
       const reordered = [...current]
       const [movedFile] = reordered.splice(fromIndex, 1)
@@ -99,8 +46,10 @@ function ImageToPdf() {
     })
   }
 
+
   const convert = async () => {
     if (files.length === 0 || isConverting) return
+
 
     setIsConverting(true)
     setError('')
@@ -123,21 +72,25 @@ function ImageToPdf() {
     }
   }
 
+
   return (
     <section className="image-to-pdf-page">
       <div className="converter-shell">
         <div className="converter-workspace">
           <div className="converter-left-panel">
             <div className="converter-heading">
-              <div className="converter-icon" aria-hidden="true">
-                <svg viewBox="0 0 32 32"><path d="M8 3h11l7 7v19H8z" /><path d="M19 3v8h7M12 18h10M12 22h10M12 26h6" /></svg>
+              <div className="converter-heading-top">
+                <div className="converter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M8 3h11l7 7v19H8z" /><path d="M19 3v8h7M12 18h10M12 22h10M12 26h6" /></svg>
+                </div>
+                <div className="converter-title">
+                  <p className="apps-kicker">Free online tool</p>
+                  <h1>Image to PDF</h1>
+                </div>
               </div>
-              <div className="converter-title">
-                <p className="apps-kicker">Free online tool</p>
-                <h1>Image to PDF</h1>
-              </div>
-              <p className="converter-subtitle">Convert JPG and PNG images into A4 pages.</p>
+              <p className="converter-subtitle">Convert PNG, JPG, JPEG, SVG, WebP, GIF, and TIFF images into A4 pages.</p>
             </div>
+
 
             <div
               className="converter-dropzone"
@@ -157,17 +110,18 @@ function ImageToPdf() {
                 ref={fileInput}
                 className="converter-file-input"
                 type="file"
-                accept="image/jpeg,image/png"
+                accept=".png,.jpg,.jpeg,.svg,.webp,.gif,.tif,.tiff,image/png,image/jpeg,image/svg+xml,image/webp,image/gif,image/tiff,image/tif"
                 multiple
-                aria-label="Choose JPG or PNG images"
+                aria-label="Choose supported image files"
                 onChange={(event) => {
                   addFiles(Array.from(event.target.files ?? []))
                   event.target.value = ''
                 }}
               />
-              <span className="upload-hint">JPG or PNG · Files stay on your device</span>
+              <span className="upload-hint">PNG, JPG, SVG, WebP, GIF, TIFF · Files stay on your device</span>
             </div>
           </div>
+
 
           <div className="selected-images">
             <div className="selected-images-heading">
@@ -197,6 +151,7 @@ function ImageToPdf() {
                             : page.length === 5 && pageItemIndex >= 3
                               ? 3
                               : 2
+
 
                         return (
                           <article
@@ -269,11 +224,13 @@ function ImageToPdf() {
             </button>
           </div>
 
+
         </div>
         {error && <p className="converter-error" role="alert">{error}</p>}
       </div>
     </section>
   )
 }
+
 
 export default ImageToPdf
