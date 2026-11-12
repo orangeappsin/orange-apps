@@ -3,16 +3,18 @@ import './App.css'
 import logo from './assets/logo.png'
 import About from './pages/About.tsx'
 import Apps from './pages/Apps.tsx'
+import EndlessRunner from './pages/EndlessRunner.tsx'
 import Games from './pages/Games.tsx'
 import Home from './pages/Home.tsx'
 import ImageToPdf from './pages/ImageToPdf.tsx'
 
 
-type Page = 'home' | 'apps' | 'games' | 'about' | 'image-to-pdf'
+type Page = 'home' | 'apps' | 'games' | 'about' | 'image-to-pdf' | 'endless-runner'
 
 
 function pageFromPath(pathname: string): Page {
   if (pathname === '/image-to-pdf') return 'image-to-pdf'
+  if (pathname === '/endless-runner') return 'endless-runner'
   if (pathname === '/apps') return 'apps'
   if (pathname === '/games') return 'games'
   if (pathname === '/about') return 'about'
@@ -38,7 +40,11 @@ function NavigationIcon({ name }: { name: Page }) {
   if (name === 'games') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M8 7.5A3.5 3.5 0 0 1 11.5 4h1A3.5 3.5 0 0 1 16 7.5v.3a3 3 0 0 1 1.8 2.8L18 16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l.2-5.4A3 3 0 0 1 8 7.8v-.3Zm2.5 4.5h3a1 1 0 0 0 0-2h-1V8.5a1 1 0 1 0-2 0v1h-1a1 1 0 0 0 0 2h1v1a1 1 0 1 0 2 0v-1Zm5 5.5h.5a1.5 1.5 0 0 0 1.5-1.5v-.5h-2v2Zm-10 0v-2H4v.5A1.5 1.5 0 0 0 5.5 18H6Z" />
+        <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+          <circle cx="12" cy="5" r="2" fill="currentColor" stroke="none" />
+          <path d="M12 7v5m-2-3h4M6 13h12a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2Z" />
+          <path d="M8 15v2m-1-1h2m7 0h.01m2 0h.01" />
+        </g>
       </svg>
     )
   }
@@ -72,25 +78,18 @@ function App() {
 
 
   return (
-    <div className="orange-site">
+    <div className={`orange-site${page === 'endless-runner' ? ' runner-mode' : ''}`}>
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
-          <button
-            aria-label="Go to home"
-            className="nav-logo"
-            onClick={() => navigate('home')}
-            type="button"
-          >
-            <img src={logo} alt="Orange Apps logo" />
-          </button>
           {navigation.map(({ page: target, label }) => (
             <button
-              aria-current={page === target || (target === 'apps' && page === 'image-to-pdf') ? 'page' : undefined}
-              className={`nav-link${page === target || (target === 'apps' && page === 'image-to-pdf') ? ' active' : ''}`}
+              aria-current={page === target || (target === 'apps' && page === 'image-to-pdf') || (target === 'games' && page === 'endless-runner') ? 'page' : undefined}
+              className={`nav-link${target === 'home' ? ' nav-link-home' : ''}${page === target || (target === 'apps' && page === 'image-to-pdf') || (target === 'games' && page === 'endless-runner') ? ' active' : ''}`}
               key={target}
               onClick={() => navigate(target)}
+              type="button"
             >
-              <NavigationIcon name={target} />
+              {target === 'home' ? <img src={logo} alt="" /> : <NavigationIcon name={target} />}
               <span>{label}</span>
             </button>
           ))}
@@ -99,9 +98,10 @@ function App() {
       <main className="site-content">
         {page === 'home' && <Home onApps={() => navigate('apps')} />}
         {page === 'apps' && <Apps onOpenImageToPdf={() => navigate('image-to-pdf')} />}
-        {page === 'games' && <Games />}
+        {page === 'games' && <Games onOpenEndlessRunner={() => navigate('endless-runner')} />}
         {page === 'about' && <About />}
         {page === 'image-to-pdf' && <ImageToPdf />}
+        {page === 'endless-runner' && <EndlessRunner onExit={() => navigate('games')} />}
       </main>
       <footer className="site-footer">
         <span className="footer-brand"><img src="/favicon.png" alt="" /> orangeapps.in</span>

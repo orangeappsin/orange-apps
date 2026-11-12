@@ -38,27 +38,28 @@
 }
 
 .home-tagline {
-  margin: 16px 0 0;
-  font-size: clamp(17px, 2vw, 24px);
-  font-style: italic;
-  font-weight: 650;
+  max-width: 13ch;
+  margin: 14px 0 0;
+  color: var(--ink);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: 1.08;
 }
 
 .home-description {
   max-width: 540px;
-  margin: clamp(24px, 5vh, 50px) 0 22px;
-  color: #314158;
-  font-size: clamp(17px, 2vw, 23px);
-  line-height: 1.55;
-  text-align: justify;
-  text-indent: 2em;
+  margin: 20px 0 24px;
+  color: #536176;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.7;
 }
 
 .home-action {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 18px;
+  padding: 13px 20px;
   border: 0;
   border-radius: 9px;
   background: var(--orange);
@@ -155,11 +156,17 @@
   .home-page {
     grid-template-columns: 1fr;
     align-content: center;
-    gap: 12px;
-    padding: 18px 24px;
+    gap: 8px;
+    padding: 18px 20px;
   }
 
   .home-copy { text-align: center; }
+  .home-tagline {
+    max-width: 18ch;
+    margin: 10px auto 0;
+    font-size: clamp(28px, 7vw, 38px);
+  }
+
   .home-brand {
     width: min(100%, 400px);
     margin: 0 auto 6px;
@@ -169,12 +176,12 @@
     max-width: 100%;
   }
   .home-kicker { margin-bottom: 8px; font-size: 10px; }
-  .home-tagline { margin-top: 10px; font-size: 16px; }
 
   .home-description {
-    max-width: 440px;
-    margin: 16px auto;
-    font-size: 16px;
+    max-width: 38ch;
+    margin: 16px auto 20px;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
   .home-art {
@@ -191,6 +198,7 @@
 
 @media (max-height: 650px) {
   .home-page { padding-top: 14px; padding-bottom: 14px; }
-  .home-description { margin-top: 18px; margin-bottom: 14px; }
+  .home-tagline { margin-top: 10px; }
+  .home-description { margin-top: 14px; margin-bottom: 14px; }
   .home-art { width: min(38vw, 350px); }
 }
